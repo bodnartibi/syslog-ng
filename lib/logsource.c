@@ -34,6 +34,9 @@
 #include <string.h>
 
 gboolean accurate_nanosleep = FALSE;
+gint global_host_num;
+gint global_sender_num;
+gint global_program_num;
 
 void
 log_source_wakeup(LogSource *self)
@@ -207,6 +210,11 @@ log_source_init(LogPipe *s)
                          SC_TYPE_PROCESSED, &self->recvd_messages);
   stats_register_counter(self->stats_level, self->stats_source | SCS_SOURCE, self->stats_id, self->stats_instance,
                          SC_TYPE_STAMP, &self->last_message_seen);
+
+  global_host_num = stats_components_get_component_index(SCS_HOST);
+  global_sender_num = stats_components_get_component_index(SCS_SENDER);
+  global_program_num = stats_components_get_component_index(SCS_PROGRAM);
+
   stats_unlock();
   return TRUE;
 }
@@ -301,15 +309,15 @@ log_source_queue(LogPipe *s, LogMessage *msg, const LogPathOptions *path_options
     {
       stats_lock();
 
-      stats_register_and_increment_dynamic_counter(2, stats_components_get_component_index(SCS_HOST) | SCS_SOURCE, NULL,
+      stats_register_and_increment_dynamic_counter(2, global_host_num | SCS_SOURCE, NULL,
                                                    log_msg_get_value(msg, LM_V_HOST, NULL),
                                                    msg->timestamps[LM_TS_RECVD].tv_sec);
       if (stats_check_level(3))
         {
-          stats_register_and_increment_dynamic_counter(3, stats_components_get_component_index(SCS_SENDER) | SCS_SOURCE, NULL,
+          stats_register_and_increment_dynamic_counter(3, global_sender_num | SCS_SOURCE, NULL,
                                                        log_msg_get_value(msg, LM_V_HOST_FROM,
                                                            NULL), msg->timestamps[LM_TS_RECVD].tv_sec);
-          stats_register_and_increment_dynamic_counter(3, stats_components_get_component_index(SCS_PROGRAM) | SCS_SOURCE, NULL,
+          stats_register_and_increment_dynamic_counter(3, global_program_num | SCS_SOURCE, NULL,
                                                        log_msg_get_value(msg, LM_V_PROGRAM,
                                                            NULL), msg->timestamps[LM_TS_RECVD].tv_sec);
         }

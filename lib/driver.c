@@ -120,6 +120,8 @@ log_src_driver_init_method(LogPipe *s)
   LogSrcDriver *self = (LogSrcDriver *) s;
   GlobalConfig *cfg = log_pipe_get_config(s);
 
+  global_group_number = stats_components_get_component_index(SCS_GROUP);
+
   if (!log_driver_init_method(s))
     return FALSE;
 
@@ -131,7 +133,7 @@ log_src_driver_init_method(LogPipe *s)
     }
 
   stats_lock();
-  stats_register_counter(0, SCS_SOURCE | stats_components_get_component_index(SCS_GROUP), self->super.group, NULL,
+  stats_register_counter(0, SCS_SOURCE | global_group_number, self->super.group, NULL,
                          SC_TYPE_PROCESSED,
                          &self->super.processed_group_messages);
   stats_register_counter(0, stats_components_get_component_index(SCS_CENTER), NULL, "received", SC_TYPE_PROCESSED,
@@ -150,7 +152,7 @@ log_src_driver_deinit_method(LogPipe *s)
     return FALSE;
 
   stats_lock();
-  stats_unregister_counter(SCS_SOURCE | stats_components_get_component_index(SCS_GROUP), self->super.group, NULL,
+  stats_unregister_counter(SCS_SOURCE | global_group_number, self->super.group, NULL,
                            SC_TYPE_PROCESSED,
                            &self->super.processed_group_messages);
   stats_unregister_counter(stats_components_get_component_index(SCS_CENTER), NULL, "received", SC_TYPE_PROCESSED,
@@ -248,6 +250,8 @@ log_dest_driver_init_method(LogPipe *s)
   LogDestDriver *self = (LogDestDriver *) s;
   GlobalConfig *cfg = log_pipe_get_config(s);
 
+  global_group_number = stats_components_get_component_index(SCS_GROUP);
+
   if (!log_driver_init_method(s))
     return FALSE;
 
@@ -258,7 +262,7 @@ log_dest_driver_init_method(LogPipe *s)
     }
 
   stats_lock();
-  stats_register_counter(0, SCS_DESTINATION | stats_components_get_component_index(SCS_GROUP), self->super.group, NULL,
+  stats_register_counter(0, SCS_DESTINATION | global_group_number, self->super.group, NULL,
                          SC_TYPE_PROCESSED,
                          &self->super.processed_group_messages);
   stats_register_counter(0, stats_components_get_component_index(SCS_CENTER), NULL, "queued", SC_TYPE_PROCESSED,
@@ -288,7 +292,7 @@ log_dest_driver_deinit_method(LogPipe *s)
   g_assert(self->queues == NULL);
 
   stats_lock();
-  stats_unregister_counter(SCS_DESTINATION | stats_components_get_component_index(SCS_GROUP), self->super.group, NULL,
+  stats_unregister_counter(SCS_DESTINATION | global_group_number, self->super.group, NULL,
                            SC_TYPE_PROCESSED,
                            &self->super.processed_group_messages);
   stats_unregister_counter(stats_components_get_component_index(SCS_CENTER), NULL, "queued", SC_TYPE_PROCESSED,

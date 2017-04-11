@@ -78,6 +78,8 @@ typedef struct _StatsCluster
   gchar *query_key;
 } StatsCluster;
 
+gint global_group_number;
+
 typedef void (*StatsForeachCounterFunc)(StatsCluster *sc, gint type, StatsCounterItem *counter, gpointer user_data);
 
 void stats_components_init();
