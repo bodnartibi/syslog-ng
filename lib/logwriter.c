@@ -963,6 +963,7 @@ log_writer_format_log(LogWriter *self, LogMessage *lm, GString *result)
             g_string_append_len(result, "\xEF\xBB\xBF", 3);
           log_template_append_format(self->options->template, lm,
                                      &self->options->template_options,
+                                     NULL,
                                      LTZ_SEND,
                                      seq_num, NULL,
                                      result);
@@ -1004,6 +1005,7 @@ log_writer_format_log(LogWriter *self, LogMessage *lm, GString *result)
         {
           log_template_format(template, lm,
                               &self->options->template_options,
+                              NULL,
                               LTZ_SEND,
                               seq_num, NULL,
                               result);

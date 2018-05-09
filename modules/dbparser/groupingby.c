@@ -287,7 +287,7 @@ _perform_groupby(GroupingBy *self, LogMessage *msg)
     {
       CorrellationKey key;
 
-      log_template_format(self->key_template, msg, NULL, LTZ_LOCAL, 0, NULL, buffer);
+      log_template_format(self->key_template, msg, NULL, NULL, LTZ_LOCAL, 0, NULL, buffer);
       log_msg_set_value(msg, context_id_handle, buffer->str, -1);
 
       correllation_key_setup(&key, self->scope, msg, buffer->str);

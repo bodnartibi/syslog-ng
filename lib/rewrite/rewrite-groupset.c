@@ -44,7 +44,7 @@ log_rewrite_groupset_foreach_func(const gchar *name, TypeHint type,
 
   result = g_string_sized_new(64);
 
-  log_template_format(template, msg, NULL, LTZ_LOCAL, 0, value, result);
+  log_template_format(template, msg, NULL, NULL, LTZ_LOCAL, 0, value, result);
 
   NVHandle handle = log_msg_get_value_handle(name);
   log_msg_set_value(msg, handle, result->str, result->len);

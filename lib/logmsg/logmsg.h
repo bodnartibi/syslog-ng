@@ -288,6 +288,18 @@ log_msg_get_value_name(NVHandle handle, gssize *name_len)
   return nv_registry_get_handle_name(logmsg_registry, handle, name_len);
 }
 
+static inline const LogStamp *
+log_msg_get_recieved_timestamp(const LogMessage *self)
+{
+  return &self->timestamps[LM_TS_RECVD];
+}
+
+static inline const LogStamp *
+log_msg_get_sent_timestamp(const LogMessage *self)
+{
+  return &self->timestamps[LM_TS_STAMP];
+}
+
 typedef gboolean (*LogMessageTagsForeachFunc)(const LogMessage *self, LogTagId tag_id, const gchar *name,
                                               gpointer user_data);
 

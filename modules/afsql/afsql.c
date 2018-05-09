@@ -779,7 +779,7 @@ afsql_dd_ensure_accessible_database_table(AFSqlDestDriver *self, LogMessage *msg
 {
   GString *table = g_string_sized_new(32);
 
-  log_template_format(self->table, msg, &self->template_options, LTZ_LOCAL, 0, NULL, table);
+  log_template_format(self->table, msg, &self->template_options, NULL, LTZ_LOCAL, 0, NULL, table);
 
   if (!afsql_dd_ensure_table_is_syslogng_conform(self, table))
     {
@@ -825,7 +825,7 @@ afsql_dd_build_insert_command(AFSqlDestDriver *self, LogMessage *msg, GString *t
 
       if ((self->fields[i].flags & AFSQL_FF_DEFAULT) == 0 && self->fields[i].value != NULL)
         {
-          log_template_format(self->fields[i].value, msg, &self->template_options, LTZ_SEND, self->seq_num, NULL, value);
+          log_template_format(self->fields[i].value, msg, &self->template_options, NULL, LTZ_SEND, self->seq_num, NULL, value);
           if (self->null_value && strcmp(self->null_value, value->str) == 0)
             {
               g_string_append(insert_command, "NULL");

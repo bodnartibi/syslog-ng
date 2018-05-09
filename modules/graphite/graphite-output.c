@@ -140,7 +140,7 @@ tf_graphite_format(GString *result, ValuePairs *vp, LogMessage *msg, const LogTe
 
   userdata.result = result;
   userdata.formatted_unixtime = g_string_new("");
-  log_template_format(timestamp_template, msg, NULL, 0, 0, NULL, userdata.formatted_unixtime);
+  log_template_format(timestamp_template, msg, NULL, NULL, 0, 0, NULL, userdata.formatted_unixtime);
 
   return_value = value_pairs_foreach(vp, tf_graphite_foreach_func, msg, 0, time_zone_mode, template_options, &userdata);
 

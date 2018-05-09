@@ -131,7 +131,7 @@ synthetic_message_apply(SyntheticMessage *self, CorrellationContext *context, Lo
           log_template_format_with_context(g_ptr_array_index(self->values, i),
                                            context ? (LogMessage **) context->messages->pdata : &msg,
                                            context ? context->messages->len : 1,
-                                           NULL, LTZ_LOCAL, 0, context ? context->key.session_id : NULL, buffer);
+                                           NULL, NULL, LTZ_LOCAL, 0, context ? context->key.session_id : NULL, buffer);
           log_msg_set_value_by_name(msg,
                                     ((LogTemplate *) g_ptr_array_index(self->values, i))->name,
                                     buffer->str,

@@ -25,7 +25,7 @@
 #include "timestamp-serialize.h"
 
 static gboolean
-_write_log_stamp(SerializeArchive *sa, LogStamp *stamp)
+_write_log_stamp(SerializeArchive *sa, const LogStamp *stamp)
 {
   return serialize_write_uint64(sa, stamp->tv_sec) &&
          serialize_write_uint32(sa, stamp->tv_usec) &&
@@ -54,11 +54,19 @@ _read_log_stamp(SerializeArchive *sa, LogStamp *stamp)
 
 
 gboolean
-timestamp_serialize(SerializeArchive *sa, LogStamp *timestamps)
+timestamp_serialize(SerializeArchive *sa, LogStamp *timestamps, const LogStamp *processed)
 {
+  const LogStamp *ts;
+  if (processed != NULL)
+    ts = processed;
+  else if (timestamps[LM_TS_PROCESSED].zone_offset == -1)
+    ts = &timestamps[LM_TS_RECVD];
+  else
+    ts = &timestamps[LM_TS_PROCESSED];
+
   return _write_log_stamp(sa, &timestamps[LM_TS_STAMP]) &&
          _write_log_stamp(sa, &timestamps[LM_TS_RECVD]) &&
-         _write_log_stamp(sa, &timestamps[LM_TS_PROCESSED]);
+         _write_log_stamp(sa, ts);
 }
 
 gboolean

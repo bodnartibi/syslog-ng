@@ -54,7 +54,8 @@ user_template_function_call(LogTemplateFunction *s, gpointer state, const LogTem
 {
   UserTemplateFunction *self = (UserTemplateFunction *) s;
 
-  log_template_append_format_with_context(self->template, args->messages, args->num_messages, args->opts, args->tz,
+  log_template_append_format_with_context(self->template, args->messages, args->num_messages, args->opts, args->processed,
+                                          args->tz,
                                           args->seq_num, args->context_id, result);
 }
 

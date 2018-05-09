@@ -399,7 +399,7 @@ riemann_dd_field_string_maybe_add(riemann_event_t *event, LogMessage *msg,
   if (!template)
     return;
 
-  log_template_format(template, msg, template_options, LTZ_SEND,
+  log_template_format(template, msg, template_options, NULL, LTZ_SEND,
                       seq_num, NULL, target);
 
   if (target->len != 0)
@@ -416,7 +416,7 @@ riemann_dd_field_integer_maybe_add(riemann_event_t *event, LogMessage *msg,
   if (!template)
     return;
 
-  log_template_format(template, msg, template_options, LTZ_SEND,
+  log_template_format(template, msg, template_options, NULL, LTZ_SEND,
                       seq_num, NULL, target);
 
   if (target->len != 0)
@@ -466,7 +466,7 @@ riemann_dd_field_add_attribute_vp(const gchar *name,
 static gboolean
 riemann_add_metric_to_event(RiemannDestDriver *self, riemann_event_t *event, LogMessage *msg, GString *str)
 {
-  log_template_format(self->fields.metric, msg, &self->template_options,
+  log_template_format(self->fields.metric, msg, &self->template_options, NULL,
                       LTZ_SEND, self->super.seq_num, NULL, str);
 
   if (str->len == 0)
@@ -513,7 +513,7 @@ riemann_add_ttl_to_event(RiemannDestDriver *self, riemann_event_t *event, LogMes
 {
   gdouble d;
 
-  log_template_format(self->fields.ttl, msg, &self->template_options,
+  log_template_format(self->fields.ttl, msg, &self->template_options, NULL,
                       LTZ_SEND, self->super.seq_num, NULL,
                       str);
 

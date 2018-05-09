@@ -27,6 +27,7 @@
 
 #include "syslog-ng.h"
 #include "common-template-typedefs.h"
+#include "logstamp.h"
 
 /* macro IDs */
 enum
@@ -112,7 +113,8 @@ extern LogMacroDef macros[];
 
 /* low level macro functions */
 guint log_macro_lookup(const gchar *macro, gint len);
-gboolean log_macro_expand(GString *result, gint id, gboolean escape, const LogTemplateOptions *opts, gint tz,
+gboolean log_macro_expand(GString *result, gint id, gboolean escape, const LogTemplateOptions *opts,
+                          const LogStamp *processed, gint tz,
                           gint32 seq_num, const gchar *context_id, const LogMessage *msg);
 gboolean log_macro_expand_simple(GString *result, gint id, const LogMessage *msg);
 

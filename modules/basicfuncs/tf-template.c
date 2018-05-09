@@ -77,6 +77,7 @@ tf_template_call(LogTemplateFunction *self, gpointer s, const LogTemplateInvokeA
   TFTemplateState *state = (TFTemplateState *) s;
 
   log_template_append_format_with_context(state->invoked_template, args->messages, args->num_messages, args->opts,
+                                          args->processed,
                                           args->tz, args->seq_num, args->context_id, result);
 }
 

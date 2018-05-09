@@ -261,7 +261,7 @@ vp_pairs_foreach(gpointer data, gpointer user_data)
   gint time_zone_mode = GPOINTER_TO_INT (((gpointer *)user_data)[7]);
 
   log_template_append_format((LogTemplate *)vpc->template, msg,
-                             template_options,
+                             template_options, NULL,
                              time_zone_mode, seq_num, NULL, sb);
 
   vp_results_insert(results, vp_transform_apply(vp, vpc->name), vpc->template->type_hint, sb);
@@ -385,7 +385,7 @@ vp_merge_builtins(ValuePairs *vp, VPResults *results, LogMessage *msg, gint32 se
         {
         case VPT_MACRO:
           log_macro_expand(sb, spec->id, FALSE,
-                           template_options, time_zone_mode, seq_num, NULL, msg);
+                           template_options, NULL, time_zone_mode, seq_num, NULL, msg);
           break;
         case VPT_NVPAIR:
         {

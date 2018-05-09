@@ -63,7 +63,7 @@ Java_org_syslog_1ng_LogTemplate_format(JNIEnv *env, jobject obj, jlong template_
   LogMessage *msg = (LogMessage *)msg_handle;
   GString *formatted_message = g_string_sized_new(1024);
   jstring result = NULL;
-  log_template_format(template, msg, template_options, tz, seqnum, NULL, formatted_message);
+  log_template_format(template, msg, template_options, NULL, tz, seqnum, NULL, formatted_message);
   result = (*env)->NewStringUTF(env, formatted_message->str);
   g_string_free(formatted_message, TRUE);
   return result;

@@ -48,7 +48,7 @@ _serialize_message(LogMessageSerializationState *state)
   serialize_write_uint32(sa, msg->flags & ~LF_STATE_MASK);
   serialize_write_uint16(sa, msg->pri);
   g_sockaddr_serialize(sa, msg->saddr);
-  timestamp_serialize(sa, msg->timestamps);
+  timestamp_serialize(sa, msg->timestamps, state->processed);
   serialize_write_uint32(sa, msg->host_id);
   tags_serialize(msg, sa);
   serialize_write_uint8(sa, msg->initial_parse);
@@ -61,14 +61,21 @@ _serialize_message(LogMessageSerializationState *state)
 }
 
 gboolean
-log_msg_serialize(LogMessage *self, SerializeArchive *sa)
+log_msg_serialize_with_ts_processed(LogMessage *self, SerializeArchive *sa, const LogStamp *processed)
 {
   LogMessageSerializationState state = { 0 };
 
   state.version = LGM_V26;
   state.msg = self;
   state.sa = sa;
+  state.processed = processed;
   return _serialize_message(&state);
+}
+
+gboolean
+log_msg_serialize(LogMessage *self, SerializeArchive *sa)
+{
+  return log_msg_serialize_with_ts_processed(self, sa, NULL);
 }
 
 static gboolean

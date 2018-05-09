@@ -159,7 +159,7 @@ assert_template_format_with_escaping_and_context_msgs(const gchar *template, gbo
   GString *res = g_string_sized_new(128);
   const gchar *context_id = "test-context-id";
 
-  log_template_format_with_context(templ, msgs, num_messages, NULL, LTZ_LOCAL, 999, context_id, res);
+  log_template_format_with_context(templ, msgs, num_messages, NULL, NULL, LTZ_LOCAL, 999, context_id, res);
   gsize result_length = expected_len >= 0 ? expected_len : strlen(expected);
   cr_assert_eq(res->len, result_length, "context template test failed, template=%s, actual=%.*s, expected=%.*s",
                template, (gint) res->len, res->str, (gint) result_length, expected);
@@ -272,7 +272,7 @@ perftest_template(gchar *template)
   start_stopwatch();
   for (i = 0; i < BENCHMARK_COUNT; i++)
     {
-      log_template_format(templ, msg, NULL, LTZ_LOCAL, 0, NULL, res);
+      log_template_format(templ, msg, NULL, NULL, LTZ_LOCAL, 0, NULL, res);
     }
   stop_stopwatch_and_display_result(BENCHMARK_COUNT,
                                     "      %-90.*s",

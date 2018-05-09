@@ -47,6 +47,7 @@ typedef struct _LogTemplateInvokeArgs
 
   /* options for recursive template evaluation, inherited from the parent */
   const LogTemplateOptions *opts;
+  LogStamp *processed;
   gint tz;
   gint seq_num;
   const gchar *context_id;

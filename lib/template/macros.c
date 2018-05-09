@@ -230,7 +230,8 @@ _is_message_source_an_ip_address(const LogMessage *msg)
 }
 
 gboolean
-log_macro_expand(GString *result, gint id, gboolean escape, const LogTemplateOptions *opts, gint tz, gint32 seq_num,
+log_macro_expand(GString *result, gint id, gboolean escape, const LogTemplateOptions *opts, const LogStamp *processed,
+                 gint tz, gint32 seq_num,
                  const gchar *context_id, const LogMessage *msg)
 {
   switch (id)
@@ -459,7 +460,7 @@ log_macro_expand(GString *result, gint id, gboolean escape, const LogTemplateOpt
       gchar buf[64];
       gint length;
       time_t t;
-      const LogStamp *stamp;
+      const LogStamp *stamp = NULL;
       LogStamp sstamp;
       glong zone_ofs;
       guint tmp_hour;
@@ -492,7 +493,18 @@ log_macro_expand(GString *result, gint id, gboolean escape, const LogTemplateOpt
       else if (id >= M_TIME_FIRST + M_PROCESSED_OFS && id <= M_TIME_LAST + M_PROCESSED_OFS)
         {
           id -= M_PROCESSED_OFS;
-          stamp = &msg->timestamps[LM_TS_PROCESSED];
+          if (-1 == msg->timestamps[LM_TS_PROCESSED].zone_offset)
+            {
+              stamp = processed;
+            }
+          else
+            {
+              stamp = &msg->timestamps[LM_TS_PROCESSED];
+            }
+          if (NULL == stamp)
+            {
+              stamp = &msg->timestamps[LM_TS_STAMP];
+            }
         }
       else
         {
@@ -611,7 +623,8 @@ log_macro_expand(GString *result, gint id, gboolean escape, const LogTemplateOpt
 gboolean
 log_macro_expand_simple(GString *result, gint id, const LogMessage *msg)
 {
-  return log_macro_expand(result, id, FALSE, &template_options_for_macro_expand, LTZ_LOCAL, 0, NULL, msg);
+  LogStamp dummy;
+  return log_macro_expand(result, id, FALSE, &template_options_for_macro_expand, &dummy, LTZ_LOCAL, 0, NULL, msg);
 }
 
 guint

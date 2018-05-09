@@ -62,7 +62,7 @@ format_template_thread(gpointer s)
   result = g_string_sized_new(0);
   for (i = 0; i < 10000; i++)
     {
-      log_template_format(templ, msg, NULL, LTZ_SEND, 5555, NULL, result);
+      log_template_format(templ, msg, NULL, NULL, LTZ_SEND, 5555, NULL, result);
       cr_assert_str_eq(result->str, expected, "multi-threaded formatting yielded invalid result (iteration: %d)", i);
     }
   g_string_free(result, TRUE);

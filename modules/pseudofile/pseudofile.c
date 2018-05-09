@@ -76,7 +76,7 @@ pseudofile_dd_set_template(LogDriver *s, LogTemplate *template)
 static void
 _format_message(PseudoFileDestDriver *self, LogMessage *msg, GString *formatted_message)
 {
-  log_template_format(self->template, msg, &self->template_options, LTZ_LOCAL, 0, NULL, formatted_message);
+  log_template_format(self->template, msg, &self->template_options, NULL, LTZ_LOCAL, 0, NULL, formatted_message);
 }
 
 static EVTTAG *

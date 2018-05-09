@@ -28,7 +28,7 @@
 #include "logmsg/logmsg.h"
 #include "serialize.h"
 
-gboolean timestamp_serialize(SerializeArchive *sa, LogStamp *timestamps);
+gboolean timestamp_serialize(SerializeArchive *sa, LogStamp *timestamps, const LogStamp *processed);
 
 gboolean timestamp_deserialize_legacy(SerializeArchive *sa, LogStamp *timestamps);
 gboolean timestamp_deserialize(SerializeArchive *sa, LogStamp *timestamps);
